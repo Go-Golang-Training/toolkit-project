@@ -190,3 +190,44 @@ func TestTools_CreateDirIfNotExist(t *testing.T) {
 	}
 
 }
+
+// Table test for Slugify
+var slugTests = []struct {
+	name          string
+	s             string
+	expected      string
+	errorExpected bool
+}{
+	{name: "valid string", s: "now is the time", expected: "now-is-the-time", errorExpected: false},
+	{name: "empty string", s: "", expected: "", errorExpected: true},
+	{name: "complex string", s: "Now??!! is the time 5:45PM ++++***SQL Injection.SQL", expected: "now-is-the-time-5-45pm-sql-injection-sql", errorExpected: false},
+	{name: "arabic string", s: "دابا هو الوقت للمرح", expected: "", errorExpected: true},
+	{name: "japanese string", s: "今こそ楽しむ時です", expected: "", errorExpected: true},
+	{name: "japanese, arabic and roman characters", s: "今こそ楽しむ時です دابا هو الوقت للمرح now is the time for fun", expected: "now-is-the-time-for-fun", errorExpected: false},
+}
+
+func TestTools_Slugify(t *testing.T) {
+
+	var testTool Tools
+
+	// Try to create a slug from a weird string
+	_, err := testTool.Slugify("Hello World from Go Slugify test function!!!")
+	if err != nil {
+		t.Error(err)
+	}
+
+	for _, e := range slugTests {
+		slug, err := testTool.Slugify(e.s)
+		if err != nil && !e.errorExpected {
+			t.Errorf("%s: error received when none expected: %s", e.name, err.Error())
+		}
+		if !e.errorExpected && slug != e.expected {
+			t.Errorf("%s: wrong slug returned; expected %s, but got %s", e.name, e.expected, slug)
+		}
+		if err == nil && e.errorExpected {
+			t.Errorf("%s: no error received when expected", e.name)
+		}
+
+	}
+
+}
