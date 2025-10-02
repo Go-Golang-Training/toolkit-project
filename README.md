@@ -16,4 +16,4 @@ The included tools are:
 
 ## Installation
 
-`go get -u https://github.com/Go-Golang-Training/toolkit`
+`go get -u github.com/Go-Golang-Training/toolkit`
