@@ -1,3 +1,3 @@
-module github.com/Go-Golang-Training/toolkit-project/myapp
+module myapp
 
 go 1.25.1
