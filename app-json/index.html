@@ -24,8 +24,6 @@
             <hr>
 
             <form>
-
-
                 <div class="mb-3">
                     <label for="json" class="form-label">JSON to Send:</label>
                     <textarea style="font-family: Courier,sans-serif" class="form-control"
@@ -36,39 +34,35 @@
 }
                     </textarea>
                 </div>
-
-
                 <a id="pushBtn" class="btn btn-primary">Push JSON</a>
+                <a id="remoteBtn" class="btn btn-secondary ms-2">Remote Service</a>
             </form>
             <hr>
             <p><strong>Response from server:</strong></p>
             <div style="outline: 1px solid silver; padding: 2em">
                 <pre id="response">No response from server yet...</pre>
             </div>
-
         </div>
     </div>
 </div>
 
 <script>
     let pushBtn = document.getElementById("pushBtn");
-    let jsonPayload = document.getElementById("json")
+    let remoteBtn = document.getElementById("remoteBtn");
+    let jsonPayload = document.getElementById("json");
     let serverResponse = document.getElementById("response");
 
-    pushBtn.addEventListener("click", function () {
-        console.log("clicked, json is", jsonPayload.value);
-
+    pushBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        serverResponse.innerHTML = "Waiting for /receive-post...";
         const payload = jsonPayload.value;
         const headers = new Headers();
-
+        headers.append("Content-Type", "application/json");
         const body = {
             method: 'POST',
             body: payload,
             headers: headers,
         }
-
-        headers.append("Content-Type", "application/json");
-
         fetch("http://localhost:8081/receive-post", body)
             .then((response) => response.json())
             .then((data) => {
@@ -77,7 +71,28 @@
             .catch((error) => {
                 serverResponse.innerHTML = "<br><br>Error: " + error;
             })
-    })
+    });
+
+    remoteBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        serverResponse.innerHTML = "Waiting for /remote-service...";
+        const payload = jsonPayload.value;
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        const body = {
+            method: 'POST',
+            body: payload,
+            headers: headers,
+        }
+        fetch("http://localhost:8081/remote-service", body)
+            .then((response) => response.json())
+            .then((data) => {
+                serverResponse.innerHTML = JSON.stringify(data, undefined, 4);
+            })
+            .catch((error) => {
+                serverResponse.innerHTML = "<br><br>Error: " + error;
+            })
+    });
 </script>
 </body>
 </html>
