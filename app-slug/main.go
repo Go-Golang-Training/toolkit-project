@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/Go-Golang-Training/toolkit-project/toolkit"
+	"github.com/Go-Golang-Training/toolkit"
 )
 
 func main() {

@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Go-Golang-Training/toolkit-project/toolkit"
+	"github.com/Go-Golang-Training/toolkit"
 )
 
 type RequestPayload struct {

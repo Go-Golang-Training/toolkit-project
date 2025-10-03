@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/Go-Golang-Training/toolkit-project/toolkit"
+	"github.com/Go-Golang-Training/toolkit"
 )
 
 func main() {
